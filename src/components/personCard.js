@@ -7,7 +7,7 @@ const PersonCard = ({ user, onEdit, onDelete }) => {
   return (
     <Col key={id} sm={6} md={4} lg={2} xl={3}>
       <Card>
-        <Card.Img variant="top" src={picture} />
+        <Card.Img variant="top" src={picture} alt="User" />
         <br />
         <Card.Title>{name}</Card.Title>
 
@@ -35,6 +35,7 @@ const PersonCard = ({ user, onEdit, onDelete }) => {
           </Button>
         </Card.Footer>
       </Card>
+      <br />
     </Col>
   );
 };

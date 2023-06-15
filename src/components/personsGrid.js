@@ -67,29 +67,31 @@ const PersonsGrid = () => {
       </Row>
       <br />
       <br />
-      <Row>
-        {islLoading ? (
-          <div>
-            <strong>Loading...</strong>
-          </div>
-        ) : (
-          users.map((user) => (
-            <PersonCard
-              user={user}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))
-        )}
-      </Row>
-      <PersonForm
-        selectedUser={selectedUser}
-        showModal={showModal}
-        onCloseModal={handleCloseModal}
-        onSave={handleSave}
-        formData={formData}
-        setFormData={setFormData}
-      />
+      <div className="app-content">
+        <Row>
+          {islLoading ? (
+            <div>
+              <strong>Loading...</strong>
+            </div>
+          ) : (
+            users.map((user) => (
+              <PersonCard
+                user={user}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ))
+          )}
+        </Row>
+        <PersonForm
+          selectedUser={selectedUser}
+          showModal={showModal}
+          onCloseModal={handleCloseModal}
+          onSave={handleSave}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      </div>
     </>
   );
 };
