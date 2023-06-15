@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
-  Card,
-  ListGroup,
-  Row,
-  Col,
   Modal,
   Form,
+  Row,
 } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
 import {
   fetchUsersStart,
   fetchUsersFailure,
@@ -17,6 +14,8 @@ import {
   addUser,
   deleteUser,
 } from "reducers/usersSlice";
+import PersonCard from 'components/personCard';
+import PersonForm from 'forms/personForm';
 import { API_BASE_URL, USER_AMOUNT } from "Constants";
 import { fetchUsersFromAPI } from "api/handleAPIRequests";
 
@@ -116,110 +115,23 @@ const PersonsGrid = () => {
             <strong>Loading...</strong>
           </div>
         ) : (
-          users.map((user) => (
-            <Col key={user.id} sm={6} md={4} lg={2} xl={3}>
-              <Card>
-                <Card.Img variant="top" src={user.picture} />
-                <br />
-                <Card.Title>{user.name}</Card.Title>
-
-                <Card.Body>
-                  <ListGroup variant="flash">
-                    <ListGroup.Item>
-                      <strong>Email:</strong> <br /> {user.email}
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      <strong>Location:</strong> <br /> {user.location}{" "}
-                    </ListGroup.Item>
-                  </ListGroup>
-                </Card.Body>
-
-                <Card.Footer>
-                  <Button
-                    variant="primary"
-                    onClick={() => handleEdit(user)}
-                    style={{ marginRight: "10px" }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="danger"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </Button>
-                </Card.Footer>
-              </Card>
-            </Col>
-          ))
+            users.map((user) => (
+              <PersonCard
+                user={user}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ))
         )}
       </Row>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedUser ? "Edit User" : "Add User"}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            {!selectedUser ? (
-              <Form.Group controlId="formPicture">
-                <Form.Label>Picture</Form.Label>
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  placeholder="Enter picture"
-                  value={formData.picture}
-                  onChange={(e) =>
-                    setFormData({ ...formData, picture: e.target.files[0] })
-                  }
-                />
-              </Form.Group>
-            ) : (
-              <> </>
-            )}
-            <Form.Group controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter name"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-              />
-            </Form.Group>
-            <Form.Group controlId="formEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </Form.Group>
-            <Form.Group controlId="formLocation">
-              <Form.Label>Location</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter location"
-                value={formData.location}
-                onChange={(e) =>
-                  setFormData({ ...formData, location: e.target.value })
-                }
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <PersonForm
+        selectedUser={selectedUser}
+        showModal={showModal}
+        onCloseModal={handleCloseModal}
+        onSave={handleSave}
+        formData={formData}
+        setFormData={setFormData}
+      />
     </>
   );
 };
