@@ -76,6 +76,7 @@ const PersonsGrid = () => {
           ) : (
             users.map((user) => (
               <PersonCard
+                key={user.id}
                 user={user}
                 onEdit={handleEdit}
                 onDelete={handleDelete}

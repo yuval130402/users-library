@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { API_BASE_URL, USER_AMOUNT } from "Constants";
-import { fetchUsersFromAPI } from "api/handleAPIRequests";
 import {
   fetchUsersStart,
   fetchUsersSuccess,
@@ -17,21 +15,6 @@ const HandleAPIRequests = () => {
     dispatch(fetchUsersStart());
     fetchUsers(API_BASE_URL, { results: USER_AMOUNT });
   }, []);
-
-  /*function fetchUsersFromAPI(url, params) {
-    const apiUrl = new URL(url);
-    const searchParams = new URLSearchParams(params);
-  
-    apiUrl.search = searchParams.toString();
-  
-    return fetch(apiUrl.toString())
-      .then((response) => response.json())
-      .then((data) => data.results)
-      .catch((error) => {
-        console.log(error);
-        return [];
-      });
-  }*/
 
   const fetchUsers = async (url, params) => {
     try {
