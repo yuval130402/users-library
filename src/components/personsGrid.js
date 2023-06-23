@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Row } from "react-bootstrap";
+import { Button, ListGroup, Row, Form } from "react-bootstrap";
 import { updateUser, addUser, deleteUser } from "reducers/usersSlice";
 import PersonCard from "components/personCard";
 import PersonForm from "forms/personForm";
@@ -10,6 +10,7 @@ const PersonsGrid = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.users);
   const islLoading = useSelector((state) => state.users.islLoading);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -19,6 +20,22 @@ const PersonsGrid = () => {
     location: "",
     picture: "",
   });
+
+  const filteredUsers = users.filter((user) => {
+    const { email, name, id, location } = user;
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+    return (
+      email.toLowerCase().includes(lowerCaseSearchTerm) ||
+      name.toLowerCase().includes(lowerCaseSearchTerm) || 
+      id.toLowerCase().includes(lowerCaseSearchTerm) ||
+      location.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+  });
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const handleEdit = (user) => {
     setSelectedUser(user);
@@ -65,6 +82,17 @@ const PersonsGrid = () => {
           Add User
         </Button>
       </Row>
+      <br/>
+      <Row>
+        <Form.Group>
+          <Form.Control
+            type="text"
+            placeholder="Search by email, name, ID, or location"
+            value={searchTerm}
+            onChange={handleSearch}>
+          </Form.Control>
+        </Form.Group>
+      </Row>
       <br />
       <br />
       <div className="app-content">
@@ -73,6 +101,15 @@ const PersonsGrid = () => {
             <div>
               <strong>Loading...</strong>
             </div>
+          ) : ( searchTerm ? (
+              filteredUsers.map((user) => (
+                <PersonCard 
+                  key={user.id}
+                  user={user}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                ></PersonCard>
+              ))
           ) : (
             users.map((user) => (
               <PersonCard
@@ -82,7 +119,7 @@ const PersonsGrid = () => {
                 onDelete={handleDelete}
               />
             ))
-          )}
+          ))}
         </Row>
         <PersonForm
           selectedUser={selectedUser}
