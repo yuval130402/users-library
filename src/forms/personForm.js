@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Modal, Form, Button } from "react-bootstrap";
 
@@ -11,6 +11,45 @@ const PersonForm = ({
   setFormData,
 }) => {
   const { name, email, location, picture } = formData;
+  const [ errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!name || name.length < 3) {
+      errors.name = 'Name should be at least 3 characters long.';
+    }
+
+    if (!email || !isValidEmail(email)) {
+      errors.email = "Please enter a valid email address.";
+    }
+
+    if (!location) {
+      errors.location = 'Location is required.';
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  const isValidEmail = (email) => {
+    // Simple email validation regex pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const handleSave = () => {
+    if (validateForm()) {
+      onSave();
+    }
+  };
+
+  const handleClose = () => {
+    setErrors({});
+    onCloseModal();
+  }
+
 
   return (
     <Modal show={showModal} onHide={onCloseModal}>
@@ -34,6 +73,7 @@ const PersonForm = ({
           ) : (
             <> </>
           )}
+          
           <Form.Group controlId="formName">
             <Form.Label>Name</Form.Label>
             <Form.Control
@@ -43,8 +83,15 @@ const PersonForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
+              isInvalid={!!errors.name}
             />
+            {errors.name && (
+              <Form.Control.Feedback type="invalid">
+                {errors.name}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
+
           <Form.Group controlId="formEmail">
             <Form.Label>Email</Form.Label>
             <Form.Control
@@ -54,8 +101,15 @@ const PersonForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
+              isInvalid={!!errors.email}
             />
+            {errors.email && (
+              <Form.Control.Feedback type="invalid">
+                {errors.email}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
+          
           <Form.Group controlId="formLocation">
             <Form.Label>Location</Form.Label>
             <Form.Control
@@ -65,15 +119,21 @@ const PersonForm = ({
               onChange={(e) =>
                 setFormData({ ...formData, location: e.target.value })
               }
+              isInvalid={!!errors.location}
             />
+            {errors.location && (
+              <Form.Control.Feedback type="invalid">
+                {errors.location}
+              </Form.Control.Feedback>
+            )}
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onCloseModal}>
+        <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={onSave}>
+        <Button variant="primary" onClick={handleSave}>
           Save
         </Button>
       </Modal.Footer>
