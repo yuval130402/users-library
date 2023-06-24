@@ -11,10 +11,13 @@ const PageHeader = ({ title, children }) => {
         <Row>
           <Col style={{ display: "flex" }}>
             <div style={{ display: "flex", justifyContent: "center", flex: 1 }}>
-              <h1 style={{ marginTop: 15 }}>{title}</h1>
+              <h1 style={{ color: "white" }}>{title}</h1>
             </div>
-            <div>{children}</div>
           </Col>
+        </Row>
+        <br/>
+        <Row>
+          <div>{children}</div>
         </Row>
       </Container>
       <hr></hr>
