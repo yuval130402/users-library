@@ -1,14 +1,25 @@
-import Container from 'react-bootstrap/Container';
-import './App.css';
-import UserLibraryPage from "components/userLibraryPage";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Urls } from "./Constants";
+import UserLibraryPage from "pages/userLibraryPage";
+import FavoritesPage from "pages/favoritesPage";
+import HomePage from "pages/homePage";
+import Layout from "layout/layout";
 
+// import css file
+import "./App.css";
 
 const App = () => {
   return (
-    <Container className="App">
-      <UserLibraryPage></UserLibraryPage>
-    </Container>
+    <div className="App">
+      <Layout>
+        <Routes>
+          <Route path={Urls.Home} element={<HomePage/>} /> 
+          <Route path={Urls.Browse} element={<UserLibraryPage />} />
+          <Route path={Urls.Favorites} element={<FavoritesPage />} />
+        </Routes>
+      </Layout>
+    </div>
   );
-}
+};
 
 export default App;
