@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { API_BASE_URL, USER_AMOUNT } from "Constants";
+import { API_BASE_URL, MAX_USERS, SEED } from "Constants";
 import {
   fetchUsersStart,
   fetchUsersSuccess,
   fetchUsersFailure,
-} from "reducers/usersSlice";
+} from "features/users/usersSlice";
 
 // make AJAX requests to fetch user data.
 const HandleAPIRequests = () => {
@@ -13,7 +13,7 @@ const HandleAPIRequests = () => {
 
   useEffect(() => {
     dispatch(fetchUsersStart());
-    fetchUsers(API_BASE_URL, { results: USER_AMOUNT });
+    fetchUsers(API_BASE_URL, { results: MAX_USERS, seed: SEED});
   }, []);
 
   const fetchUsers = async (url, params) => {
