@@ -11,7 +11,7 @@ function UserLibraryPage() {
         <PageHeader title="User Library"></PageHeader>
       </Container>
       <Container>
-        <PersonsGrid></PersonsGrid>
+      <PersonsGrid></PersonsGrid>
       </Container>
     </Container>
   );
