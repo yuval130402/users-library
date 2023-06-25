@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { API_BASE_URL, MAX_USERS, SEED } from "Constants";
+import { API_BASE_URL, USER_PER_PAGE, SEED } from "utils/Constants";
 import {
   fetchUsersStart,
   fetchUsersSuccess,
@@ -8,12 +9,12 @@ import {
 } from "features/users/usersSlice";
 
 // make AJAX requests to fetch user data.
-const HandleAPIRequests = () => {
+const HandleAPIRequests = ({currentPage}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUsersStart());
-    fetchUsers(API_BASE_URL, { results: MAX_USERS, seed: SEED});
+    fetchUsers(API_BASE_URL, { page: currentPage, results: USER_PER_PAGE, seed: SEED});
   }, []);
 
   const fetchUsers = async (url, params) => {
@@ -44,5 +45,9 @@ const HandleAPIRequests = () => {
 
   return null; // No UI rendering in this component
 };
+
+HandleAPIRequests.propTypes = {
+  currentPage: PropTypes.number,
+}
 
 export default HandleAPIRequests;
