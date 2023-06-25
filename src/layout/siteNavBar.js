@@ -2,11 +2,11 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Urls } from 'Constants';
+import { Urls } from 'utils/Constants';
 
 function SiteNavBar({children}) {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary fixed-top" bg="dark"  data-bs-theme="dark">
+    <Navbar expand="lg" className="bg-body-tertiary fixed-top" bg="dark" data-bs-theme="dark">
       <Container fluid>
         <Navbar.Brand className='px-2' href="/">User Library</Navbar.Brand>
         <Nav

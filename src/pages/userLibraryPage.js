@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Row } from "react-bootstrap";
 import PersonForm from "forms/personForm";
-import HandleAPIRequests from "api/handleAPIRequests";
 import LoadingSpinner from "components/LoadingSpinner";
 import PersonsGrid from "components/personsGrid";
 import PaginatedFooter from "features/pagination/paginatedFooter";
 import { updateUser, addUser, deleteUser } from "features/users/usersSlice";
 import { changePage } from "features/pagination/pageSlice";
-import { USER_PER_PAGE, MAX_USERS, MAX_PAGE } from "Constants";
+import { API_BASE_URL, USER_PER_PAGE, SEED, MAX_PAGE } from "utils/Constants";
+import {
+  fetchUsersStart,
+  fetchUsersSuccess,
+  fetchUsersFailure,
+} from "features/users/usersSlice";
+import { fetchUsers } from "api/handleAPIRequests";
 
 function UserLibraryPage() {
   const dispatch = useDispatch();
@@ -78,9 +83,23 @@ function UserLibraryPage() {
       dispatch(changePage(page))
   }
 
+  useEffect(() => {
+    dispatch(fetchUsersStart());
+    fetchUsers(API_BASE_URL, { page: currentPage, results: USER_PER_PAGE, seed: SEED}).then(result => {
+      // Function has finished executing and returned the result
+      if (result.response === "Success") {
+        // send action to userReducer in order to update the global state.
+        dispatch(fetchUsersSuccess(result.fetchedUsers));
+      }
+      else{
+        // send action to userReducer in order to update the global state.
+        dispatch(fetchUsersFailure(result.apiResponse));
+      }
+    })
+  }, [currentPage, dispatch]);
+
   return (
     <>
-      <HandleAPIRequests />
       <div className="app-content">
         <Row>
           {isLoading ? (
@@ -96,7 +115,7 @@ function UserLibraryPage() {
           ) : (
             <>
               <Row style={{ paddingBottom: "10px" }}>
-                <Button variant="primary" onClick={() => setShowModal(true)}>
+                <Button variant="secondary" onClick={() => setShowModal(true)}>
                   Add User
                 </Button>
               </Row>
@@ -116,6 +135,7 @@ function UserLibraryPage() {
           formData={formData}
           setFormData={setFormData}
         />
+        
         <PaginatedFooter
           totalPages={MAX_PAGE}
           currentPage={currentPage}
