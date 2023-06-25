@@ -5,7 +5,7 @@ import { Card, Col, ListGroup, Button } from "react-bootstrap";
 const PersonCard = ({ user, onEdit, onDelete }) => {
   const { id, name, email, location, picture } = user;
   return (
-    <Col key={id} sm={6} md={4} lg={2} xl={3}>
+    <Col style={{ margin: "10px", marginTop: "4%"}} key={id} sm={6} md={4} lg={2} xl={2}>
       <Card>
         <Card.Img variant="top" src={picture} alt="User" />
         <br />
@@ -41,7 +41,7 @@ const PersonCard = ({ user, onEdit, onDelete }) => {
 };
 
 PersonCard.propTypes = {
-    user: PropTypes.any,
+    user: PropTypes.object,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
 };
