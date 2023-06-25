@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Urls } from "./Constants";
+import { Urls } from "./utils/Constants";
 import UserLibraryPage from "pages/userLibraryPage";
 import FavoritesPage from "pages/favoritesPage";
 import HomePage from "pages/homePage";
-import Layout from "layout/layout";
+import Layout from "layout/Layout";
 
 // import css file
 import "./App.css";
