@@ -6,10 +6,10 @@ import LoadingSpinner from "components/LoadingSpinner";
 import PersonsGrid from "components/personsGrid";
 import PaginatedFooter from "features/pagination/paginatedFooter";
 import { changePage, resetPage } from "features/pagination/pageSlice";
-import { clearSearchQuery } from 'features/search/searchSlice';
+import { clearSearchQuery } from "features/search/searchSlice";
 import {
-  updateUser, 
-  addUser, 
+  updateUser,
+  addUser,
   deleteUser,
   fetchUsersStart,
   fetchUsersSuccess,
@@ -39,7 +39,7 @@ function UserLibraryPage() {
     picture: "",
   });
 
-  const usersPerPage = useRef([]);
+  const [usersPerPage, setUsersPerPage] = useState([]);
   const filteredUsers = users.filter((user) => {
     const { email, name, id, location } = user;
     const lowerCaseSearchQuery = searchQuery.toLowerCase();
@@ -83,9 +83,9 @@ function UserLibraryPage() {
     });
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (email) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      dispatch(deleteUser(id));
+      dispatch(deleteUser(email));
     }
   };
 
@@ -93,11 +93,9 @@ function UserLibraryPage() {
     dispatch(changePage(page));
   };
 
-
-
   useEffect(() => {
-    dispatch(resetPage());
-    dispatch(clearSearchQuery());
+    //dispatch(resetPage());
+    //dispatch(clearSearchQuery());
     dispatch(fetchUsersStart());
     fetchUsers(API_BASE_URL, { results: MAX_USERS, seed: SEED }).then(
       (result) => {
@@ -111,14 +109,18 @@ function UserLibraryPage() {
         }
       }
     );
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     // Filter the users array based on the currentPage number
     const startIndex = (currentPage - 1) * USER_PER_PAGE;
     const endIndex = startIndex + USER_PER_PAGE;
-    usersPerPage.current = users.slice(startIndex, endIndex);
-  }, [currentPage, users]);
+    setUsersPerPage(
+      searchQuery
+        ? filteredUsers.slice(startIndex, endIndex > filteredUsers.length ? filteredUsers.length :  endIndex)
+        : users.slice(startIndex, endIndex > users.length ? users.length : endIndex)
+    );
+  }, [currentPage, searchQuery, users]);
 
   return (
     <>
@@ -128,26 +130,19 @@ function UserLibraryPage() {
             <div role="status" className="flex justify-center items-center">
               <LoadingSpinner />
             </div>
-          ) : searchQuery ? (
-            <PersonsGrid
-              users={filteredUsers}
-              handleEdit={handleEdit}
-              handleDelete={handleDelete}
-            />
-          ) : (
-            <>
-              <Row style={{ paddingBottom: "10px" }}>
+          ) : !searchQuery ? (
+              <Row style={{ paddingBottom: "10px"}}>
                 <Button variant="secondary" onClick={() => setShowModal(true)}>
                   Add User
                 </Button>
               </Row>
-              <PersonsGrid
-                users={usersPerPage.current}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-              />
-            </>
-          )}
+          ) : <></>
+          }
+          <PersonsGrid
+            users={usersPerPage}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
         </Row>
         <PersonForm
           selectedUser={selectedUser}
@@ -156,10 +151,15 @@ function UserLibraryPage() {
           onSave={handleSave}
           formData={formData}
           setFormData={setFormData}
+          users={users}
         />
 
         <PaginatedFooter
-          totalPages={searchQuery ? Math.ceil(filteredUsers.length / USER_PER_PAGE) : MAX_PAGE}
+          totalPages={
+            searchQuery
+              ? Math.ceil(filteredUsers.length / USER_PER_PAGE)
+              : filteredUsers.length >= MAX_USERS ? Math.ceil(filteredUsers.length / USER_PER_PAGE) : MAX_PAGE
+          }
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
