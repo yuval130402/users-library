@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Row } from "react-bootstrap";
 import PersonForm from "forms/personForm";
 import LoadingSpinner from "components/LoadingSpinner";
 import PersonsGrid from "components/personsGrid";
 import PaginatedFooter from "features/pagination/paginatedFooter";
-import { changePage, resetPage } from "features/pagination/pageSlice";
-import { clearSearchQuery } from "features/search/searchSlice";
+import { changePage } from "features/pagination/pageSlice";
 import {
   updateUser,
   addUser,
