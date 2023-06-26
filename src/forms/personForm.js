@@ -9,6 +9,7 @@ const PersonForm = ({
   onSave,
   formData,
   setFormData,
+  users
 }) => {
   const { name, email, location, picture } = formData;
   const [ errors, setErrors] = useState({});
@@ -22,6 +23,12 @@ const PersonForm = ({
 
     if (!email || !isValidEmail(email)) {
       errors.email = "Please enter a valid email address.";
+    }
+    
+    // Check if email already exists
+    const emailExists = users.some((user) => user.email === email);
+    if (emailExists) {
+      errors.email = "Email address already exists!";
     }
 
     if (!location) {
@@ -60,7 +67,7 @@ const PersonForm = ({
         <Form>
           {!selectedUser ? (
             <Form.Group controlId="formPicture">
-              <Form.Label>Picture URL</Form.Label>
+              <Form.Label><strong>Picture URL</strong></Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter picture URL"
@@ -69,13 +76,14 @@ const PersonForm = ({
                   setFormData({ ...formData, picture: e.target.value })
                 }
               />
+              <br/>
             </Form.Group>
           ) : (
             <> </>
           )}
           
           <Form.Group controlId="formName">
-            <Form.Label>Name</Form.Label>
+            <Form.Label><strong>Name</strong></Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter name"
@@ -91,9 +99,9 @@ const PersonForm = ({
               </Form.Control.Feedback>
             )}
           </Form.Group>
-
+          <br/>
           <Form.Group controlId="formEmail">
-            <Form.Label>Email</Form.Label>
+            <Form.Label><strong>Email</strong></Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
@@ -109,9 +117,9 @@ const PersonForm = ({
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          
+          <br/>
           <Form.Group controlId="formLocation">
-            <Form.Label>Location</Form.Label>
+            <Form.Label><strong>Location</strong></Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter location"
@@ -142,12 +150,13 @@ const PersonForm = ({
 };
 
 PersonForm.propTypes = {
-    selectedUser: PropTypes.any,
+  selectedUser: PropTypes.any,
   showModal: PropTypes.bool,
   onCloseModal: PropTypes.func,
   onSave: PropTypes.func,
   formData: PropTypes.any,
   setFormData: PropTypes.func,
+  users: PropTypes.array,
 };
 
 export default PersonForm;
