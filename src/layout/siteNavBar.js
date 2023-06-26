@@ -18,7 +18,6 @@ function SiteNavBar({ children }) {
         </Navbar.Brand>
         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: "100px" }}>
           <Nav.Link href={Urls.Browse}>Browse</Nav.Link>
-          <Nav.Link href={Urls.Favorites}>Favorites</Nav.Link>
         </Nav>
         <div className="flex justify-end px-2">{children}</div>
       </Container>
