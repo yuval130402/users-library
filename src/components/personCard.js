@@ -5,18 +5,19 @@ import { Card, Col, ListGroup, Button } from "react-bootstrap";
 const PersonCard = ({ user, onEdit, onDelete }) => {
   const { id, name, email, location, picture } = user;
   return (
-    <Col style={{ margin: "10px", marginTop: "4%"}} key={id} sm={6} md={4} lg={2} xl={2}>
+    <Col style={{ padding: "1px", margin: "10px", marginTop: "4%"}} key={id} sm={6} md={4} lg={2} xl={2}>
       <Card>
         <Card.Img variant="top" src={picture} alt="User" />
         <br />
-        <Card.Title>{name}</Card.Title>
+        
+        <Card.Title style={{ height: "50px", display: "flex", justifyContent: "center", alignItems: "center"}}>{name}</Card.Title>
 
         <Card.Body>
-          <ListGroup variant="flash">
-            <ListGroup.Item>
+          <ListGroup variant="flash" >
+            <ListGroup.Item variant="warning" style={{ height: "150px"}}>
               <strong>Email:</strong> <br /> {email}
             </ListGroup.Item>
-            <ListGroup.Item>
+            <ListGroup.Item variant="warning" style={{ height: "150px"}}>
               <strong>Location:</strong> <br /> {location}{" "}
             </ListGroup.Item>
           </ListGroup>
