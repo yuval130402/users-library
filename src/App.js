@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Urls } from "./utils/Constants";
 import UserLibraryPage from "pages/userLibraryPage";
-import FavoritesPage from "pages/favoritesPage";
 import HomePage from "pages/homePage";
 import Layout from "layout/Layout";
 
