@@ -19,7 +19,6 @@ const usersSlice = createSlice({
             state.users = action.payload;
             state.isLoading = false;
             state.error = null;
-            
         },
         
         fetchUsersFailure(state, action) {
