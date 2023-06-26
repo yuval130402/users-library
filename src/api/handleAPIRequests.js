@@ -1,7 +1,10 @@
 import { API_BASE_URL, USER_PER_PAGE, SEED } from "utils/Constants";
 
 // make AJAX requests to fetch user data.
-export const fetchUsers = async (url = API_BASE_URL, params = {results: USER_PER_PAGE, seed: SEED}) => {
+export const fetchUsers = async (
+  url = API_BASE_URL,
+  params = { results: USER_PER_PAGE, seed: SEED }
+) => {
   try {
     // set url API according to the search params.
     const apiUrl = new URL(url);
@@ -18,11 +21,10 @@ export const fetchUsers = async (url = API_BASE_URL, params = {results: USER_PER
       email: user.email,
       location: `${user.location.country}, ${user.location.city}, ${user.location.street.name}, ${user.location.street.number}`,
     }));
-    console.log(users)
-    return {apiResponse: "Success", fetchedUsers: users}
+    console.log(users);
+    return { apiResponse: "Success", fetchedUsers: users };
   } catch (error) {
     console.log("Error fetching users:", error.message);
-    return {apiResponse: error.message, fetchedUsers: {}}
+    return { apiResponse: error.message, fetchedUsers: {} };
   }
 };
-

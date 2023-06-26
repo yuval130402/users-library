@@ -116,8 +116,14 @@ function UserLibraryPage() {
     const endIndex = startIndex + USER_PER_PAGE;
     setUsersPerPage(
       searchQuery
-        ? filteredUsers.slice(startIndex, endIndex > filteredUsers.length ? filteredUsers.length :  endIndex)
-        : users.slice(startIndex, endIndex > users.length ? users.length : endIndex)
+        ? filteredUsers.slice(
+            startIndex,
+            endIndex > filteredUsers.length ? filteredUsers.length : endIndex
+          )
+        : users.slice(
+            startIndex,
+            endIndex > users.length ? users.length : endIndex
+          )
     );
   }, [currentPage, searchQuery, users]);
 
@@ -130,13 +136,14 @@ function UserLibraryPage() {
               <LoadingSpinner />
             </div>
           ) : !searchQuery ? (
-              <Row style={{ paddingBottom: "10px"}}>
-                <Button variant="secondary" onClick={() => setShowModal(true)}>
-                  Add User
-                </Button>
-              </Row>
-          ) : <></>
-          }
+            <Row style={{ paddingBottom: "10px" }}>
+              <Button variant="secondary" onClick={() => setShowModal(true)}>
+                Add User
+              </Button>
+            </Row>
+          ) : (
+            <></>
+          )}
           <PersonsGrid
             users={usersPerPage}
             handleEdit={handleEdit}
@@ -157,7 +164,9 @@ function UserLibraryPage() {
           totalPages={
             searchQuery
               ? Math.ceil(filteredUsers.length / USER_PER_PAGE)
-              : filteredUsers.length >= MAX_USERS ? Math.ceil(filteredUsers.length / USER_PER_PAGE) : MAX_PAGE
+              : filteredUsers.length >= MAX_USERS
+              ? Math.ceil(filteredUsers.length / USER_PER_PAGE)
+              : MAX_PAGE
           }
           currentPage={currentPage}
           onPageChange={handlePageChange}

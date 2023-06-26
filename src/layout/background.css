@@ -1,9 +1,9 @@
 .background {
-    background-image: url('https://images2.alphacoders.com/261/26102.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh;
-    padding-top: 60px; /* Adjust the value to match your header height */
-    padding-bottom: 40px; /* Adjust the value to match your footer height */
-  }
+  background-image: url("https://images2.alphacoders.com/261/26102.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding-top: 60px; /* Adjust the value to match your header height */
+  padding-bottom: 40px; /* Adjust the value to match your footer height */
+}

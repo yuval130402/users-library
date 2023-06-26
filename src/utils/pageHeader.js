@@ -15,7 +15,7 @@ const PageHeader = ({ title, children }) => {
             </div>
           </Col>
         </Row>
-        <br/>
+        <br />
         <Row>
           <div>{children}</div>
         </Row>

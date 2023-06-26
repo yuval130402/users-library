@@ -9,22 +9,22 @@ const PersonForm = ({
   onSave,
   formData,
   setFormData,
-  users
+  users,
 }) => {
   const { name, email, location, picture } = formData;
-  const [ errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
 
   const validateForm = () => {
     const errors = {};
 
     if (!name || name.length < 3) {
-      errors.name = 'Name should be at least 3 characters long.';
+      errors.name = "Name should be at least 3 characters long.";
     }
 
     if (!email || !isValidEmail(email)) {
       errors.email = "Please enter a valid email address.";
     }
-    
+
     // Check if email already exists
     const emailExists = users.some((user) => user.email === email);
     if (emailExists) {
@@ -32,7 +32,7 @@ const PersonForm = ({
     }
 
     if (!location) {
-      errors.location = 'Location is required.';
+      errors.location = "Location is required.";
     }
 
     setErrors(errors);
@@ -55,8 +55,7 @@ const PersonForm = ({
   const handleClose = () => {
     setErrors({});
     onCloseModal();
-  }
-
+  };
 
   return (
     <Modal show={showModal} onHide={onCloseModal}>
@@ -67,7 +66,9 @@ const PersonForm = ({
         <Form>
           {!selectedUser ? (
             <Form.Group controlId="formPicture">
-              <Form.Label><strong>Picture URL</strong></Form.Label>
+              <Form.Label>
+                <strong>Picture URL</strong>
+              </Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter picture URL"
@@ -76,14 +77,16 @@ const PersonForm = ({
                   setFormData({ ...formData, picture: e.target.value })
                 }
               />
-              <br/>
+              <br />
             </Form.Group>
           ) : (
             <> </>
           )}
-          
+
           <Form.Group controlId="formName">
-            <Form.Label><strong>Name</strong></Form.Label>
+            <Form.Label>
+              <strong>Name</strong>
+            </Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter name"
@@ -99,9 +102,11 @@ const PersonForm = ({
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <br/>
+          <br />
           <Form.Group controlId="formEmail">
-            <Form.Label><strong>Email</strong></Form.Label>
+            <Form.Label>
+              <strong>Email</strong>
+            </Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
@@ -117,9 +122,11 @@ const PersonForm = ({
               </Form.Control.Feedback>
             )}
           </Form.Group>
-          <br/>
+          <br />
           <Form.Group controlId="formLocation">
-            <Form.Label><strong>Location</strong></Form.Label>
+            <Form.Label>
+              <strong>Location</strong>
+            </Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter location"
@@ -160,4 +167,3 @@ PersonForm.propTypes = {
 };
 
 export default PersonForm;
-
