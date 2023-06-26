@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { setSearchQuery } from './searchSlice';
+import { setSearchQuery } from 'features/search/searchSlice';
+import { resetPage } from 'features/pagination/pageSlice';
 
 
 function SearchBar() {
@@ -15,6 +16,7 @@ function SearchBar() {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
+        dispatch(resetPage());
         dispatch(setSearchQuery(localSearchQuery));
     };
     return (
