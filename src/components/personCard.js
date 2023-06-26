@@ -7,7 +7,7 @@ const PersonCard = ({ user, onEdit, onDelete }) => {
   return (
     <Col style={{ padding: "1px", margin: "10px", marginTop: "4%"}} key={id} sm={6} md={4} lg={2} xl={2}>
       <Card>
-        <Card.Img variant="top" src={picture} alt="User" />
+        <Card.Img style={{ height: "225px"}} variant="top" src={picture} alt="User" />
         <br />
         
         <Card.Title style={{ height: "50px", display: "flex", justifyContent: "center", alignItems: "center"}}>{name}</Card.Title>
