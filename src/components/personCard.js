@@ -31,7 +31,7 @@ const PersonCard = ({ user, onEdit, onDelete }) => {
           >
             Edit
           </Button>
-          <Button variant="danger" onClick={() => onDelete(user.id)}>
+          <Button variant="danger" onClick={() => onDelete(user.email)}>
             Delete
           </Button>
         </Card.Footer>

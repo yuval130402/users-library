@@ -42,8 +42,8 @@ const usersSlice = createSlice({
         },
           
         deleteUser(state, action) {
-            const id = action.payload;
-            state.users = state.users.filter((user) => user.id !== id);
+            const email = action.payload;
+            state.users = state.users.filter((user) => user.email !== email);
         },
     },
 });
