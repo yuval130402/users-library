@@ -7,7 +7,7 @@ const PersonsGrid = ({users, handleEdit, handleDelete}) => {
     <Container>
       <Row xs={1} md={2} className="g-4" style={{display: "flex", justifyContent: "center"}}>
         <br/>
-        {users.map((user) => (
+        {users?.map((user) => (
           <PersonCard
             key={user.id ? user.id : user.email}
             user={user}
