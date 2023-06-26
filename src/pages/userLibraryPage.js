@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Row } from "react-bootstrap";
 import PersonForm from "forms/personForm";
 import LoadingSpinner from "components/LoadingSpinner";
 import PersonsGrid from "components/personsGrid";
 import PaginatedFooter from "features/pagination/paginatedFooter";
-import { updateUser, addUser, deleteUser } from "features/users/usersSlice";
-import { changePage } from "features/pagination/pageSlice";
-import { API_BASE_URL, USER_PER_PAGE, SEED, MAX_PAGE } from "utils/Constants";
+import { changePage, resetPage } from "features/pagination/pageSlice";
+import { clearSearchQuery } from 'features/search/searchSlice';
 import {
+  updateUser, 
+  addUser, 
+  deleteUser,
   fetchUsersStart,
   fetchUsersSuccess,
   fetchUsersFailure,
 } from "features/users/usersSlice";
 import { fetchUsers } from "api/handleAPIRequests";
+import {
+  API_BASE_URL,
+  SEED,
+  MAX_PAGE,
+  MAX_USERS,
+  USER_PER_PAGE,
+} from "utils/Constants";
 
 function UserLibraryPage() {
   const dispatch = useDispatch();
@@ -30,6 +39,7 @@ function UserLibraryPage() {
     picture: "",
   });
 
+  const usersPerPage = useRef([]);
   const filteredUsers = users.filter((user) => {
     const { email, name, id, location } = user;
     const lowerCaseSearchQuery = searchQuery.toLowerCase();
@@ -80,23 +90,35 @@ function UserLibraryPage() {
   };
 
   const handlePageChange = (page) => {
-      dispatch(changePage(page))
-  }
+    dispatch(changePage(page));
+  };
+
+
 
   useEffect(() => {
+    dispatch(resetPage());
+    dispatch(clearSearchQuery());
     dispatch(fetchUsersStart());
-    fetchUsers(API_BASE_URL, { page: currentPage, results: USER_PER_PAGE, seed: SEED}).then(result => {
-      // Function has finished executing and returned the result
-      if (result.response === "Success") {
-        // send action to userReducer in order to update the global state.
-        dispatch(fetchUsersSuccess(result.fetchedUsers));
+    fetchUsers(API_BASE_URL, { results: MAX_USERS, seed: SEED }).then(
+      (result) => {
+        // Function has finished executing and returned the result
+        if (result.apiResponse === "Success") {
+          // send action to userReducer in order to update the global state.
+          dispatch(fetchUsersSuccess(result.fetchedUsers));
+        } else {
+          // send action to userReducer in order to update the global state.
+          dispatch(fetchUsersFailure(result.apiResponse));
+        }
       }
-      else{
-        // send action to userReducer in order to update the global state.
-        dispatch(fetchUsersFailure(result.apiResponse));
-      }
-    })
-  }, [currentPage, dispatch]);
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Filter the users array based on the currentPage number
+    const startIndex = (currentPage - 1) * USER_PER_PAGE;
+    const endIndex = startIndex + USER_PER_PAGE;
+    usersPerPage.current = users.slice(startIndex, endIndex);
+  }, [currentPage, users]);
 
   return (
     <>
@@ -120,7 +142,7 @@ function UserLibraryPage() {
                 </Button>
               </Row>
               <PersonsGrid
-                users={users}
+                users={usersPerPage.current}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
               />
@@ -135,9 +157,9 @@ function UserLibraryPage() {
           formData={formData}
           setFormData={setFormData}
         />
-        
+
         <PaginatedFooter
-          totalPages={MAX_PAGE}
+          totalPages={searchQuery ? Math.ceil(filteredUsers.length / USER_PER_PAGE) : MAX_PAGE}
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
