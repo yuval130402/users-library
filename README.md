@@ -1,4 +1,4 @@
-# user Library
+# User Library
 A user Library website using https://randomuser.me/api API.
  
 Built using react,redux, react-bootstrap, and more.
